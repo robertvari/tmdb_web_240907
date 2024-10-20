@@ -1,5 +1,6 @@
 @import "variables.css";
 @import "Navbar.css";
+@import "Footer.css";
 
 *{
     margin: 0;
@@ -9,4 +10,21 @@
 
 body{
     font-family: "Source Sans 3", sans-serif;
+}
+
+button{
+    background-color: var(--light-blue);
+    font: inherit;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.inverted-button{
+    background-color: white;
+    color: var(--light-blue);
 }

@@ -1,0 +1,11 @@
+.footer{
+    background-color: var(--navbar-color);
+    padding: 40px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer img{
+    width: 130px;
+}

@@ -7,6 +7,7 @@ export default function LandingPage() {
     <div>
       <Sidebar/>
       <MovieListView/>
+      <button>Load More</button>
     </div>
   )
 }
