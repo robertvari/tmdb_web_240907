@@ -1,0 +1,25 @@
+.navbar{
+    height: 64px;
+    background-color: var(--navbar-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.navbar img{
+    width: 154px;
+}
+
+.navbar .nav-item{
+    margin: 0 20px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.navbar .fa-search{
+    font-size: 25px;
+    color: var(--light-blue);
+    cursor: pointer;
+}
