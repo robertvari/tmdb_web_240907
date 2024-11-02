@@ -1,0 +1,14 @@
+.sidebar{
+    width: 260px;
+}
+
+.sidebar-card{
+    margin-bottom: 10px;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.sidebar-card .header{
+    display: flex;
+    justify-content: space-between;
+}
