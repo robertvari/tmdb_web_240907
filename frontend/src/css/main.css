@@ -12,6 +12,13 @@ body{
     font-family: "Source Sans 3", sans-serif;
 }
 
+.App{
+  height: 100vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+}
+
 button{
     background-color: var(--light-blue);
     font: inherit;
@@ -27,4 +34,13 @@ button{
 .inverted-button{
     background-color: white;
     color: var(--light-blue);
+}
+
+.content{
+    border: 1px solid red;
+    margin: var(--content-margin);
+}
+
+.horizontal-box {
+    display: flex;
 }

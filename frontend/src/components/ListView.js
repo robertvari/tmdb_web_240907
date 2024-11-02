@@ -2,12 +2,11 @@ import React from 'react'
 import Sidebar from "./Sidebar"
 import MovieListView from "./MovieListView"
 
-export default function LandingPage() {
+export default function ListView() {
   return (
-    <div>
+    <div className='content horizontal-box'>
       <Sidebar/>
       <MovieListView/>
-      <button>Load More</button>
     </div>
   )
 }

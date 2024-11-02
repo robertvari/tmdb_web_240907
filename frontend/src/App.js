@@ -1,13 +1,16 @@
 import Navbar from "./components/Navbar"
-import LandingPage from "./components/LandingPage"
+import ListView from "./components/ListView"
 import Footer from "./components/Footer"
 import "./css/main.css"
 
 function App() {
   return (
     <div className="App">
-      <Navbar/>
-      <LandingPage/>
+      <div>
+        <Navbar/>
+        <ListView/>
+      </div>
+      
       <Footer/>
     </div>
   );
