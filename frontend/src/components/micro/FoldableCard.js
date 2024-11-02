@@ -11,12 +11,14 @@ export default function FoldableCard({title, content}) {
                     opened? <i class="fa fa-chevron-down"/> : <i class="fa fa-chevron-right"/>
                 }
             </div>
-            
-            <div>
-                {
-                    opened? content : null
-                }
-            </div>
+
+            {
+                opened? <hr />: null
+            }
+
+            {
+                opened? content : null
+            }
         </div>
     )
 }

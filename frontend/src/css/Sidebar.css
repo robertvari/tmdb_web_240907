@@ -1,5 +1,6 @@
 .sidebar{
     width: 260px;
+    min-width: 260px;
 }
 
 .sidebar-card{
@@ -11,4 +12,9 @@
 .sidebar-card .header{
     display: flex;
     justify-content: space-between;
+    padding: 10px;
+}
+
+.sidebar-card .card-content{
+    padding: 10px;
 }
