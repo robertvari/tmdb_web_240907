@@ -23,9 +23,23 @@ function Sorting(){
 }
 
 function Filters(){
+  const genres = [
+    "Action",
+    "Adventure",
+    "Animation",
+    "Comedy",
+    "Crime",
+    "Documentary",
+    "Drama",
+    "Family",
+    "Fantasy"
+  ]
+
   return(
     <div className='card-content' onClick={e => e.stopPropagation()}>
-      Filters...
+      {
+        genres.map(genre_item => <div>{genre_item}</div>)
+      }
     </div>
   )
 }
