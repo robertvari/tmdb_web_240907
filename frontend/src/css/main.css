@@ -5,6 +5,7 @@
 @import "ListView.css";
 @import "MovieCard.css";
 @import "PopularityProgress.css";
+@import "MovieDetails.css";
 
 *{
     margin: 0;

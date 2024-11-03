@@ -32,3 +32,8 @@
 .search-box-container input{
     margin-right: 5px;
 }
+
+.navbar a{
+    text-decoration: none;
+    color: white;
+}
