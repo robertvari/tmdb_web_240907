@@ -1,0 +1,22 @@
+.popularity-progress-container{
+    background-color: black;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -10px;
+    left: 10px;
+}
+
+.popularity-progress-container p{
+    display: inherit;
+}
+
+.popularity-progress-container span{
+    font-size: 9px;
+}

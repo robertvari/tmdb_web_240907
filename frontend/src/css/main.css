@@ -3,6 +3,8 @@
 @import "Footer.css";
 @import "Sidebar.css";
 @import "ListView.css";
+@import "MovieCard.css";
+@import "PopularityProgress.css";
 
 *{
     margin: 0;
@@ -94,4 +96,12 @@ hr{
 
 .combo-box .combo-items-container .combo-item:hover{
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+input{
+    font: inherit;
+    padding-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: var(--default-border-radius);
 }

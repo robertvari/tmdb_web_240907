@@ -1,0 +1,33 @@
+.movie-card{
+    width: 171px;
+    height: 358px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.movie-card .poster-container{
+    position: relative;
+}
+
+.movie-card .title-container{
+    padding: 10px;
+}
+
+.movie-card .title-container h4{
+    font-size: 14px;
+}
+
+
+.movie-card .title-container small{
+    color: gray;
+}

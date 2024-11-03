@@ -1,4 +1,5 @@
 import React from 'react'
+import SearchBox from './micro/SearchBox'
 
 export default function Navbar() {
   return (
@@ -15,7 +16,7 @@ export default function Navbar() {
       <div style={{display:"inherit"}}>
         <div className='nav-item'>Login</div>
         <div className='nav-item'>Join TMDB</div>
-        <i className="fa fa-search" aria-hidden="true"/>
+        <SearchBox/>
       </div>
     </div>
   )
