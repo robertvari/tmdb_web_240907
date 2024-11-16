@@ -8,7 +8,7 @@ export default function MovieListView() {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:3001/movies"
+      url: "http://127.0.0.1:8000/api/movies/"
     }).then(res => set_movies(res.data))
   }, [])
 
