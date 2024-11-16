@@ -57,18 +57,12 @@ class SortListView(APIView):
 class GenreListView(APIView):
     # Retrieve data
     def get(self, request):
-        genre_list = [
-            "Action",
-            "Adventure",
-            "Animation",
-            "Comedy",
-            "Crime",
-            "Documentary",
-            "Drama",
-            "Family",
-            "Fantasy"
-        ]
+        genre_list = self.get_genre_list()
         return Response(genre_list)
+    
+    def get_genre_list(self):
+        genre_list = tmdb.Genres().movie_list()["genres"]
+        return [i.get("name") for i in genre_list]
     
     # # Create data
     # def post(self, request):
