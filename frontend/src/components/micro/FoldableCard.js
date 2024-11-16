@@ -8,7 +8,7 @@ export default function FoldableCard({title, content}) {
             <div className='header'>
                 <b>{title}</b>
                 {
-                    opened? <i class="fa fa-chevron-down"/> : <i class="fa fa-chevron-right"/>
+                    opened? <i className="fa fa-chevron-down"/> : <i className="fa fa-chevron-right"/>
                 }
             </div>
 

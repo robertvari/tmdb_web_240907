@@ -15,7 +15,7 @@ export default function MovieListView() {
   return (
     <div className='listview'>
       {
-        movies.map(movie_data => <MovieCard movie_data={movie_data}/>)
+        movies.map(movie_data => <MovieCard key={movie_data.id} movie_data={movie_data}/>)
       }
     </div>
   )
