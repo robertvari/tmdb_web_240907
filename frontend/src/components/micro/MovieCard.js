@@ -8,7 +8,7 @@ export default function MovieCard({movie_data}) {
     <Link to="/movies/12345-the-wild-robot" className='card movie-card'>
         <div className='poster-container'>
             <img src={movie_data.poster} alt="" />
-            <PopularityProgress/>
+            <PopularityProgress vote_average={movie_data.vote_average}/>
         </div>
         
         <div className='title-container'>
