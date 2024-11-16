@@ -11,3 +11,13 @@ class MovieListView(APIView):
             {"id": "3232423", "title": "The Substance", "date": "Oct 10, 2024", "poster": "https://media.themoviedb.org/t/p/w220_and_h330_face/lqoMzCcZYEFK729d6qzt349fB4o.jpg"}
         ]
         return Response(movie_data)
+    
+class NavbarView(APIView):
+    def get(self, request):
+        nav_item_list = [
+            "Movies",
+            "TV Shows",
+            "People",
+            "More"
+        ]
+        return Response(nav_item_list)
