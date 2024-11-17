@@ -1,5 +1,6 @@
 import tmdbsimple as tmdb
-import os, json, requests, shutil
+import os, json, requests, shutil, sys
+from django.core.management import execute_from_command_line
 
 tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
@@ -9,6 +10,10 @@ POSTER_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\posters"
 BACKDROP_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\backdrops"
 DATABASE_JSON = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\movie_db.json"
 PROJECT_ROOT = os.path.dirname(__file__).replace("utilities", "")
+
+sys.path.insert(0, PROJECT_ROOT)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tmdb_server.settings")
+from django.contrib.auth.models import User
 
 # Download movie data and media from TMDB
 def download_movies():
@@ -51,6 +56,8 @@ def main():
         download_movies()
 
     reset_django_db()
+    run_migrations()
+    create_superuser()
 
 def reset_django_db():
     db_file = os.path.join(PROJECT_ROOT, "db.sqlite3")
@@ -68,7 +75,18 @@ def reset_django_db():
     for i in os.listdir(migrations_folder):
         if i == "__init__.py":
             continue
+        
+        if i == "__pycache__":
+            continue
+
         os.remove(os.path.join(migrations_folder, i))
 
+def run_migrations():
+    execute_from_command_line(["manage.py", "makemigrations"])
+    execute_from_command_line(["manage.py", "migrate"])
+
+def create_superuser():
+    User.objects.create_superuser("robert", "robert@gmail.com", "testpas123")
+    
 
 main()
