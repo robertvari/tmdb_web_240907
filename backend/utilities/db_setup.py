@@ -1,5 +1,5 @@
 import tmdbsimple as tmdb
-import os, json, requests
+import os, json, requests, shutil
 
 tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
@@ -8,6 +8,7 @@ BACKDROP_ROOT_PATH = "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces"
 POSTER_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\posters"
 BACKDROP_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\backdrops"
 DATABASE_JSON = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\movie_db.json"
+PROJECT_ROOT = os.path.dirname(__file__).replace("utilities", "")
 
 # Download movie data and media from TMDB
 def download_movies():
@@ -48,5 +49,26 @@ def get_image_from_url(url, folder_path):
 def main():
     if not os.path.exists(DATABASE_JSON):
         download_movies()
+
+    reset_django_db()
+
+def reset_django_db():
+    db_file = os.path.join(PROJECT_ROOT, "db.sqlite3")
+    if os.path.exists(db_file):
+        os.remove(db_file)
+
+    tmdb_database_folder = os.path.join(PROJECT_ROOT, "tmdb_database")
+    
+    # delete __pycache__ folder
+    pycache_folder = os.path.join(tmdb_database_folder, "__pycache__")
+    if os.path.exists(pycache_folder):
+        shutil.rmtree(pycache_folder, ignore_errors=True)
+    
+    migrations_folder = os.path.join(tmdb_database_folder, "migrations")
+    for i in os.listdir(migrations_folder):
+        if i == "__init__.py":
+            continue
+        os.remove(os.path.join(migrations_folder, i))
+
 
 main()
