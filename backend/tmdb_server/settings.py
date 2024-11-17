@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
 
-    "tmdb_database"
+    "tmdb_database",
+    "users",
+    "products"
 ]
 
 CORS_ALLOWED_ORIGINS = [
