@@ -5,12 +5,15 @@ tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
 POSTER_ROOT = "https://image.tmdb.org/t/p/w300"
 BACKDROP_ROOT_PATH = "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces"
-POSTER_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\posters"
-BACKDROP_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\backdrops"
-DATABASE_JSON = r"D:\Work\PythonSuli\halado-240907\movie_db.json"
+POSTER_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\posters"
+BACKDROP_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\backdrops"
+DATABASE_JSON = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\movie_db.json"
 
 # Download movie data and media from TMDB
 def download_movies():
+    if not os.path.exists(os.path.dirname(DATABASE_JSON)):
+        os.makedirs(os.path.dirname(DATABASE_JSON))
+
     movies = tmdb.Movies()
     popular_movies = movies.popular(page=1)["results"]
 
@@ -42,9 +45,8 @@ def get_image_from_url(url, folder_path):
     print(f"Downloading: {url}")
     return image_path
 
+def main():
+    if not os.path.exists(DATABASE_JSON):
+        download_movies()
 
-# Create a clean Django migration
-# Register superuser
-# Add genres
-# Add Sort items
-# Add Movies
+main()
