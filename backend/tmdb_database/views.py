@@ -25,7 +25,7 @@ class MovieListView(APIView):
                 {
                     "title": movie.title,
                     "poster_path": movie.poster_path.url,
-                    "vote_average": movie.vote_average,
+                    "vote_average": int(round(movie.vote_average)*10),
                     "release_date": movie.release_date,
                     "genres": [{"id": genre.id, "name": genre.name} for genre in movie.genres.all()],
                     "slug": movie.slug

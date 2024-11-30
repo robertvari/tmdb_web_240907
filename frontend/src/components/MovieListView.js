@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import MovieCard from './micro/MovieCard'
-import axios from 'axios'
+import { MovieContext } from './contexts/MovieContext'
 
 export default function MovieListView() {
-  const [movies, set_movies] = useState([])
-
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/movies/"
-    }).then(res => set_movies(res.data))
-  }, [])
+  const {movie_list_proxy} = useContext(MovieContext)
 
   return (
     <div className='listview'>
       {
-        movies.map(movie_data => <MovieCard key={movie_data.id} movie_data={movie_data}/>)
+        movie_list_proxy.map(movie_data => <MovieCard key={movie_data.id} movie_data={movie_data}/>)
       }
     </div>
   )

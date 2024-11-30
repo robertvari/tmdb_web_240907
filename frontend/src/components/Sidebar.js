@@ -1,19 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import FoldableCard from './micro/FoldableCard'
 import ComboBox from './micro/ComboBox'
-import axios from 'axios'
+import { MovieContext } from './contexts/MovieContext'
+
 
 function Sorting(){
-  const [sorting_list, set_sorting_list] = useState([])
+  const {sorting_list} = useContext(MovieContext)
   const [default_item, set_default_item] = useState("")
-
-  // Gets the sort list fron Django server
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/sort-list/"
-    }).then(response => set_sorting_list(response.data))
-  }, [])
 
 
   // Waits for sorting_list and sets default_item state
@@ -32,19 +25,12 @@ function Sorting(){
 }
 
 function Filters(){
-  const [filters, set_filters] = useState([])
-
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://127.0.0.1:8000/api/genre-list/"
-    }).then(response => set_filters(response.data))
-  }, [])
+  const {genre_list} = useContext(MovieContext)
 
   return(
     <div className='card-content' onClick={e => e.stopPropagation()}>
       {
-        filters.map(genre_item => <div key={genre_item}>{genre_item}</div>)
+        genre_list.map(genre_item => <div key={genre_item.id}>{genre_item.name}</div>)
       }
     </div>
   )

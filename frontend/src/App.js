@@ -7,30 +7,35 @@ import Registration from "./components/Registration"
 import MovieDetails from "./components/MovieDetails"
 import "./css/main.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { MovieProvider } from "./components/contexts/MovieContext"
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        <div>
-          <Navbar/>
+        <div className="App">
+        <MovieProvider>
 
-          <Routes>
-            <Route path="/" element={<ListView/>}/>
-            <Route path="/tvshows" element={<ListView/>}/>
-            <Route path="/people" element={<ListView/>}/>
-            <Route path="/more" element={<More/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/registration" element={<Registration/>}/>
+          <div>
+            <Navbar/>
 
-            <Route path="/movies/:slug" element={<MovieDetails/>}/>
-          </Routes>
+            <Routes>
+              <Route path="/" element={<ListView/>}/>
+              <Route path="/tvshows" element={<ListView/>}/>
+              <Route path="/people" element={<ListView/>}/>
+              <Route path="/more" element={<More/>}/>
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/registration" element={<Registration/>}/>
 
-        </div>
-        
-        <Footer/>
-      </div>    
-    </BrowserRouter>
+              <Route path="/movies/:slug" element={<MovieDetails/>}/>
+            </Routes>
+
+          </div>
+          
+          <Footer/>
+          
+        </MovieProvider>
+        </div>    
+      </BrowserRouter>
   );
 }
 
