@@ -1,6 +1,8 @@
 import tmdbsimple as tmdb
 import os, json, requests, shutil, sys
-from django.core.management import execute_from_command_line
+import django
+from django.core.management import call_command
+from django.contrib.auth import get_user_model
 
 tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
@@ -13,7 +15,14 @@ PROJECT_ROOT = os.path.dirname(__file__).replace("utilities", "")
 
 sys.path.insert(0, PROJECT_ROOT)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tmdb_server.settings")
-from django.contrib.auth.models import User
+
+def main():
+    if not os.path.exists(DATABASE_JSON):
+        download_movies()
+
+    reset_django_db()
+    run_migrations()
+    create_superuser()
 
 # Download movie data and media from TMDB
 def download_movies():
@@ -51,15 +60,8 @@ def get_image_from_url(url, folder_path):
     print(f"Downloading: {url}")
     return image_path
 
-def main():
-    if not os.path.exists(DATABASE_JSON):
-        download_movies()
-
-    reset_django_db()
-    run_migrations()
-    create_superuser()
-
 def reset_django_db():
+    # remove db.sqlite3
     db_file = os.path.join(PROJECT_ROOT, "db.sqlite3")
     if os.path.exists(db_file):
         os.remove(db_file)
@@ -71,6 +73,7 @@ def reset_django_db():
     if os.path.exists(pycache_folder):
         shutil.rmtree(pycache_folder, ignore_errors=True)
     
+    # remove migration files
     migrations_folder = os.path.join(tmdb_database_folder, "migrations")
     for i in os.listdir(migrations_folder):
         if i == "__init__.py":
@@ -82,10 +85,15 @@ def reset_django_db():
         os.remove(os.path.join(migrations_folder, i))
 
 def run_migrations():
-    execute_from_command_line(["manage.py", "makemigrations"])
-    execute_from_command_line(["manage.py", "migrate"])
+    # init django project
+    django.setup()
+
+    # run migrations
+    call_command("makemigrations")
+    call_command("migrate")
 
 def create_superuser():
+    User = get_user_model()
     User.objects.create_superuser("robert", "robert@gmail.com", "testpas123")
     
 
