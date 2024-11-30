@@ -2,6 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import tmdbsimple as tmdb
 from datetime import datetime
+
+from tmdb_database.models import Genre, Movie
+
 tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
 
@@ -15,20 +18,21 @@ class MovieListView(APIView):
         return Response(movie_data)
     
     def get_movies(self):
-        movies = tmdb.Movies()
-        popular_movies = movies.popular(page=1).get("results")
-        
-        movie_data_model = []
-        for i in popular_movies:
-            movie_data_model.append({
-                "id": i.get("id"),
-                "title": i.get("title"),
-                "date": datetime.strptime(i.get("release_date"), "%Y-%m-%d").strftime("%Y %B %d"),
-                "poster": f"{POSTER_TOOT}{i.get('poster_path')}",
-                "vote_average": int(round(i.get("vote_average") * 10))
-            })
+        movies = []
 
-        return movie_data_model
+        for movie in Movie.objects.all():
+            movies.append(
+                {
+                    "title": movie.title,
+                    "poster_path": movie.poster_path.url,
+                    "vote_average": movie.vote_average,
+                    "release_date": movie.release_date,
+                    "genres": [{"id": genre.id, "name": genre.name} for genre in movie.genres.all()],
+                    "slug": movie.slug
+                }
+            )
+        
+        return movies
     
 class NavbarView(APIView):
     def get(self, request):
@@ -61,8 +65,13 @@ class GenreListView(APIView):
         return Response(genre_list)
     
     def get_genre_list(self):
-        genre_list = tmdb.Genres().movie_list()["genres"]
-        return [i.get("name") for i in genre_list]
+        genre_list = []
+
+        for genre in Genre.objects.all():
+            genre_list.append(
+                {"id": genre.id, "tmdb_id": genre.tmdb_id, "name": genre.name}
+            )
+        return genre_list
     
     # # Create data
     # def post(self, request):

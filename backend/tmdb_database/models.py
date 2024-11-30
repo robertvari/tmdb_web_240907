@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 import os, shutil
 from PIL import Image
@@ -11,12 +11,6 @@ def get_media_path(instance, filename):
 class Genre(models.Model):
     name = models.CharField(max_length=200)
     tmdb_id = models.IntegerField()
-
-    def __str__(self):
-        return self.name
-    
-class SortItem(models.Model):
-    name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
@@ -32,6 +26,7 @@ class Movie(models.Model):
     popularity = models.FloatField(blank=True, default=0)
     overview = models.TextField(max_length=2000, blank=True)
     language = models.CharField(max_length=200, blank=True)
+    slug = models.SlugField(max_length=200, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -49,6 +44,12 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(pre_save, sender=Movie)
+def slug_generator(sender, instance, **kwargs):
+    if not instance.slug:
+        instance.slug = slugify(f"{instance.tmdb_id}-{instance.title}")
 
 @receiver(post_delete, sender=Movie)
 def cleanup_folders(sender, instance, **kwargs):

@@ -4,7 +4,7 @@ from django.core.management import call_command
 from django.contrib.auth import get_user_model
 from django.core.files import File
 
-from tmdb_database.models import SortItem, Movie, Genre
+from tmdb_database.models import Movie, Genre
 
 tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
@@ -23,7 +23,6 @@ def main():
     run_migrations()
     create_superuser()
 
-    create_sort_items()
     create_genres()
     create_movies()
 
@@ -103,23 +102,6 @@ def create_superuser():
     User = get_user_model()
     User.objects.create_superuser("robert", "robert@gmail.com", "testpas123")
 
-def create_sort_items():
-    sort_list = [
-        "Popularity Descending",
-        "Popularity Ascending",
-        "Rating Descending",
-        "Rating Ascending",
-        "Release Date Descending",
-        "Release Date Ascending",
-        "A-Z Descending",
-        "A-Z Ascending"
-    ]
-
-    for i in sort_list:
-        sort_item = SortItem(name=i)
-        sort_item.save()
-        print(f"Sort item {i} saved to DB")
-
 def create_genres():
     genre_list = tmdb.Genres().movie_list()["genres"]
 
@@ -140,7 +122,7 @@ def create_movies():
         movie.vote_average = movie_data.get("vote_average")
         movie.popularity = movie_data.get("popularity")
         movie.overview = movie_data.get("overview")
-        movie.language = movie_data.get("original_language")        
+        movie.language = movie_data.get("original_language")       
         
         # Upload poster and backdrop images
         poster_local_path = movie_data.get("poster_path")
