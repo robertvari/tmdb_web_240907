@@ -10,6 +10,7 @@ def get_media_path(instance, filename):
 
 class Genre(models.Model):
     name = models.CharField(max_length=200)
+    tmdb_id = models.IntegerField()
 
     def __str__(self):
         return self.name

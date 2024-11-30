@@ -1,8 +1,9 @@
 import tmdbsimple as tmdb
 import os, json, requests, shutil, sys
-import django
 from django.core.management import call_command
 from django.contrib.auth import get_user_model
+
+from tmdb_database.models import SortItem, Movie, Genre
 
 tmdb.API_KEY = "83cbec0139273280b9a3f8ebc9e35ca9"
 tmdb.REQUESTS_TIMEOUT = 5
@@ -13,9 +14,6 @@ BACKDROP_CACHE_FOLDER = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\backdrops"
 DATABASE_JSON = r"D:\Work\PythonSuli\halado-240907\tmdb_cache\movie_db.json"
 PROJECT_ROOT = os.path.dirname(__file__).replace("utilities", "")
 
-sys.path.insert(0, PROJECT_ROOT)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tmdb_server.settings")
-
 def main():
     if not os.path.exists(DATABASE_JSON):
         download_movies()
@@ -23,6 +21,9 @@ def main():
     reset_django_db()
     run_migrations()
     create_superuser()
+
+    create_sort_items()
+    create_genres()
 
 # Download movie data and media from TMDB
 def download_movies():
@@ -86,7 +87,6 @@ def reset_django_db():
 
 def run_migrations():
     # init django project
-    django.setup()
 
     # run migrations
     call_command("makemigrations")
@@ -95,6 +95,28 @@ def run_migrations():
 def create_superuser():
     User = get_user_model()
     User.objects.create_superuser("robert", "robert@gmail.com", "testpas123")
-    
 
-main()
+def create_sort_items():
+    sort_list = [
+        "Popularity Descending",
+        "Popularity Ascending",
+        "Rating Descending",
+        "Rating Ascending",
+        "Release Date Descending",
+        "Release Date Ascending",
+        "A-Z Descending",
+        "A-Z Ascending"
+    ]
+
+    for i in sort_list:
+        sort_item = SortItem(name=i)
+        sort_item.save()
+        print(f"Sort item {i} saved to DB")
+
+def create_genres():
+    genre_list = tmdb.Genres().movie_list()["genres"]
+
+    for i in genre_list:
+        genre = Genre(name=i["name"], tmdb_id=i["id"])
+        genre.save()
+        print(f"Genre {i['name']} saved to DB")
