@@ -2,6 +2,7 @@ import tmdbsimple as tmdb
 import os, json, requests, shutil, sys
 from django.core.management import call_command
 from django.contrib.auth import get_user_model
+from django.core.files import File
 
 from tmdb_database.models import SortItem, Movie, Genre
 
@@ -24,6 +25,7 @@ def main():
 
     create_sort_items()
     create_genres()
+    create_movies()
 
 # Download movie data and media from TMDB
 def download_movies():
@@ -84,6 +86,11 @@ def reset_django_db():
             continue
 
         os.remove(os.path.join(migrations_folder, i))
+    
+    # delete media folder
+    media_path = os.path.join(PROJECT_ROOT, "media")
+    if os.path.exists(media_path):
+        shutil.rmtree(media_path, ignore_errors=True)
 
 def run_migrations():
     # init django project
@@ -120,3 +127,37 @@ def create_genres():
         genre = Genre(name=i["name"], tmdb_id=i["id"])
         genre.save()
         print(f"Genre {i['name']} saved to DB")
+
+def create_movies():
+    with open(DATABASE_JSON) as f:
+        movie_db = json.load(f)
+    
+    for movie_data in movie_db:
+        movie = Movie()
+        movie.tmdb_id = movie_data.get("id", 0)
+        movie.title = movie_data.get("title")
+        movie.release_date = movie_data.get("release_date")
+        movie.vote_average = movie_data.get("vote_average")
+        movie.popularity = movie_data.get("popularity")
+        movie.overview = movie_data.get("overview")
+        movie.language = movie_data.get("original_language")        
+        
+        # Upload poster and backdrop images
+        poster_local_path = movie_data.get("poster_path")
+        image_name = os.path.basename(poster_local_path)
+        movie.poster_path.save(image_name, File(open(poster_local_path, "rb")))
+
+        backdrop_local_path = movie_data.get("backdrop_path")
+        backdrop_name = os.path.basename(backdrop_local_path)
+        movie.backdrop_path.save(backdrop_name, File(open(backdrop_local_path, "rb")))
+
+        # set movie genres
+        for genre_id in movie_data.get("genre_ids"):
+            genre = Genre.objects.get(tmdb_id=genre_id)
+            movie.genres.add(genre)
+
+        movie.save()
+        print(f"Movie {movie.title} saved to DB")
+
+if __name__ == '__main__':
+    create_movies()
