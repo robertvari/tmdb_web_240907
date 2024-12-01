@@ -1,9 +1,15 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import { MovieContext } from '../contexts/MovieContext'
 
 export default function SearchBox() {
     const {search, set_search} = useContext(MovieContext)
     const [opened, set_opened] = useState(false)
+
+    useEffect(() => {
+        if(!opened){
+            set_search("")
+        }
+    }, [opened])
 
     return (
         <div onClick={e => set_opened(!opened)} className='search-box-container'>

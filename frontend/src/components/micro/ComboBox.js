@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from 'react'
 
-export default function ComboBox({items, selected_item}) {
+export default function ComboBox({items, selected_item, on_changed}) {
     const [opened, set_opened] = useState(false)
-    const [current_item, set_current_item] = useState("")
+    const [current_item, set_current_item] = useState(selected_item)
 
     function handle_item_clicked(item_name){
         set_current_item(item_name)
         set_opened(false)
+        on_changed(item_name)
     }
-
-    useEffect(() => {
-        set_current_item(selected_item)
-    }, [selected_item])
     
     return (
         <div className='combo-box'>

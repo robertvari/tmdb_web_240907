@@ -18,3 +18,7 @@
 .sidebar-card .card-content{
     padding: 10px;
 }
+
+.sidebar-card .card-content .active{
+    font-weight: 800;
+}

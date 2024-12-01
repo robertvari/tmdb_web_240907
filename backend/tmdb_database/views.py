@@ -14,20 +14,22 @@ POSTER_TOOT = "https://image.tmdb.org/t/p/w300"
 # Create your views here.
 class MovieListView(APIView):
     def get(self, request):
-        movie_data = self.get_movies()
+        sorting = request.GET.get("sorting")
+        movie_data = self.get_movies(sorting)
         return Response(movie_data)
     
-    def get_movies(self):
+    def get_movies(self, sorting):
         movies = []
 
-        for movie in Movie.objects.all():
+        for movie in Movie.objects.order_by(sorting):
             movies.append(
                 {
                     "title": movie.title,
                     "poster_path": movie.poster_path.url,
                     "vote_average": int(round(movie.vote_average)*10),
+                    "popilarity": movie.popularity,
                     "release_date": movie.release_date,
-                    "genres": [{"id": genre.id, "name": genre.name} for genre in movie.genres.all()],
+                    "genres": [genre.name for genre in movie.genres.all()],
                     "slug": movie.slug
                 }
             )
@@ -43,20 +45,6 @@ class NavbarView(APIView):
             "More"
         ]
         return Response(nav_item_list)
-    
-class SortListView(APIView):
-    def get(self, request):
-        sort_list = [
-            "Popularity Descending",
-            "Popularity Ascending",
-            "Rating Descending",
-            "Rating Ascending",
-            "Release Date Descending",
-            "Release Date Ascending",
-            "A-Z Descending",
-            "A-Z Ascending"
-        ]
-        return Response(sort_list)
 
 class GenreListView(APIView):
     # Retrieve data

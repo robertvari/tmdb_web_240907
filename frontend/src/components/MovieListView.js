@@ -8,7 +8,7 @@ export default function MovieListView() {
   return (
     <div className='listview'>
       {
-        movie_list_proxy.map(movie_data => <MovieCard key={movie_data.id} movie_data={movie_data}/>)
+        movie_list_proxy.map(movie_data => <MovieCard key={movie_data.slug} movie_data={movie_data}/>)
       }
     </div>
   )
