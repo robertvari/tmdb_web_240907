@@ -15,6 +15,10 @@ export default function MovieDetails() {
         fetch_movie_details(slug)
     }, [])
 
+    if(!movie_details){
+        return null
+    }
+
     return (
         <div>
             <div className='movie-details-header'>
