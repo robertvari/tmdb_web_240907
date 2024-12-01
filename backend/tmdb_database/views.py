@@ -74,3 +74,21 @@ class GenreListView(APIView):
     #     return Response("Update request")
 
     # CRUD = Create, Retrieve, Update, Delete
+
+class MovieDetalsView(APIView):
+    def get(self, request, slug):
+        movie = Movie.objects.get(slug=slug)
+        movie_details = {
+            "id": movie.id,
+            "tmdb_id": movie.tmdb_id,
+            "title": movie.title,
+            "genres": [i.name for i in movie.genres.all()],
+            "release_date": movie.release_date,
+            "poster_path": movie.poster_path.url,
+            "backdrop_path": movie.backdrop_path.url,
+            "vote_average": int(round(movie.vote_average)*10),
+            "popularity": movie.popularity,
+            "overview": movie.overview,
+            "language": movie.language
+        }
+        return Response(movie_details)
