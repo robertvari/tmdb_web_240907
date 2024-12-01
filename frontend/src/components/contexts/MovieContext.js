@@ -14,6 +14,7 @@ export const MovieProvider = (props) => {
     const [genre, set_genre] = useState("")
     const [sorting, set_sorting] = useState("Popularity Descending")
     const [sort_query, set_sort_query] = useState("-popularity")
+    const [movie_details, set_movie_details] = useState(null)
 
     const sort_list = [
         "Popularity Descending",
@@ -38,6 +39,13 @@ export const MovieProvider = (props) => {
             method: "get",
             url: `${API_URL}/api/tmdb/movies/?sorting=${sort_query}`
         }).then(res => {set_movie_list(res.data); set_movie_list_proxy(res.data)})
+    }
+
+    const fetch_movie_details = (slug) => {
+        axios({
+            method: "get",
+            url: `${API_URL}/api/tmdb/movies/${slug}/`
+        }).then(res => set_movie_details(res.data))
     }
 
     // fetch genre and movie list from server
@@ -95,7 +103,9 @@ export const MovieProvider = (props) => {
             genre: genre,
             set_genre: set_genre,
             sorting: sorting,
-            set_sorting: set_sorting
+            set_sorting: set_sorting,
+            fetch_movie_details: fetch_movie_details,
+            movie_details: movie_details
         }}>
 
             {props.children}
